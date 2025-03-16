@@ -6,10 +6,42 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    /**
+     * Connexion de l'utilisateur.
+     */
+    public function login(Request $request)
+    {
+
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Identifiants incorrects'
+            ], 401);
+        }
+
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+            'message' => ''
+        ], 200);
+    }
+
     /**
      * Afficher la liste des utilisateurs.
      */
@@ -124,4 +156,5 @@ class AuthController extends Controller
         $user->delete();
         return response()->json(['message' => 'Utilisateur supprimé avec succès'], 200);
     }
+
 }
