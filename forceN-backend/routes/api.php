@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MissionController;
+use App\Http\Controllers\PresenceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,18 +17,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/* Route::middleware('auth:sanctum')->get('/users', function (Request $request) {
     return $request->user();
-});
+}); */
 
 Route::post('/register', [AuthController::class, 'store']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
 Route::get('/profile', [AuthController::class, 'profile']);
+Route::get('/update', [AuthController::class, 'update']);
 Route::post('/logout', [AuthController::class, 'logout']);
-});
-
-Route::get('/test-api', function () {
-    return response()->json(['message' => 'API fonctionne !']);
+Route::post('/missions', [MissionController::class, 'mission']);
+Route::post('/presence', [PresenceController::class, 'store']);
+Route::get('/users', [AuthController::class, 'user']);
 });

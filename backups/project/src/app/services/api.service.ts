@@ -1,15 +1,16 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { User, Mission, TimeSheet, Invoice } from "../models/user.model";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { User, Mission, TimeSheet, Invoice } from '../models/user.model';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = "http://localhost:8000/api"; // Laravel API URL
+  private apiUrl = 'http://localhost:8000/api'; // Laravel API URL
 
   constructor(private http: HttpClient) {}
+  
 
   // User endpoints
   getUsers(): Observable<User[]> {
@@ -35,10 +36,7 @@ export class ApiService {
   }
 
   approveTimeSheet(id: number): Observable<TimeSheet> {
-    return this.http.patch<TimeSheet>(
-      `${this.apiUrl}/timesheets/${id}/approve`,
-      {}
-    );
+    return this.http.patch<TimeSheet>(`${this.apiUrl}/timesheets/${id}/approve`, {});
   }
 
   // Invoice endpoints
@@ -47,22 +45,7 @@ export class ApiService {
   }
 
   generateInvoice(missionId: number): Observable<Invoice> {
-    return this.http.post<Invoice>(`${this.apiUrl}/invoices/generate`, {
-      missionId,
-    });
+    return this.http.post<Invoice>(`${this.apiUrl}/invoices/generate`, { missionId });
   }
 
-  submitPresence(presence: {
-    date: string;
-    time: string;
-    cours: string;
-    faith_declaration: boolean;
-  }): Observable<any> {
-    const token = localStorage.getItem("token"); // Récupérer le token depuis le stockage local
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`, // Ajouter le token dans l'en-tête
-    });
-
-    return this.http.post(`${this.apiUrl}/presence`, presence, { headers });
-  }
 }

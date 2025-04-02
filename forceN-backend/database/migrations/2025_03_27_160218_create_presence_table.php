@@ -11,23 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('missions', function (Blueprint $table) {
+        Schema::create('presence', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('consultant_id')->constrained();
-            $table->string('titre');
-            $table->text('description');
-            $table->date('date_debut');
-            $table->date('date_fin');
+            $table->date('date');
+            $table->time('time');
+            $table->string('cours');
+            $table->text('notes')->nullable();
+            $table->boolean('faith_declaration');
             $table->timestamps();
+
+
+
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('missions');
+        Schema::dropIfExists('presence');
     }
 };

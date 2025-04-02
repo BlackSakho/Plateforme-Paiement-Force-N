@@ -38,6 +38,7 @@ class AuthController extends Controller
         return response()->json([
             'user' => $user,
             'token' => $token,
+            'role' => $user->role,
             'message' => ''
         ], 200);
     }
@@ -99,6 +100,26 @@ class AuthController extends Controller
         }
         return response()->json($user, 200);
     }
+    public function user(Request $request){
+        return response()->json($request->user(), 200);
+    }
+    /**
+ * Déconnexion de l'utilisateur.
+ */
+public function logout(Request $request)
+{
+    // Récupérer l'utilisateur authentifié
+    $user = $request->user();
+
+    if ($user) {
+        // Révoquer tous les tokens de l'utilisateur
+        $user->tokens()->delete();
+
+        return response()->json(['message' => 'Déconnexion réussie'], 200);
+    }
+
+    return response()->json(['message' => 'Aucun utilisateur authentifié'], 401);
+}
 
     /**
      * Mettre à jour un utilisateur.

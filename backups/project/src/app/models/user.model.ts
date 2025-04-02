@@ -45,12 +45,3 @@ export interface Invoice {
   dueDate: Date;
   createdAt: Date;
 }
-
-export interface Presence{
-  id: number;
-  date: Date;
-  hours: number;
-  cours: string;
-  notes: string;
-  faith_declaration: string;
-}

@@ -1,11 +1,16 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Component } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from "@angular/forms";
+import { AuthService } from "../../services/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-login',
+  selector: "app-login",
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
@@ -15,82 +20,88 @@ import { Router } from '@angular/router';
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label for="email">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              formControlName="email" 
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
               class="form-control"
-            >
+            />
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input 
-              type="password" 
-              id="password" 
-              formControlName="password" 
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
               class="form-control"
-            >
+            />
           </div>
-          <button type="submit" class="btn-primary" [disabled]="loginForm.invalid">
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="loginForm.invalid"
+          >
             Login
           </button>
           <p class="text-center mt-3">
-            Don't have an account? 
+            Don't have an account?
             <a href="/register" class="text-primary">Register here</a>
           </p>
         </form>
       </div>
     </div>
   `,
-  styles: [`
-    .login-container {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--light-gray);
-    }
-    
-    .login-card {
-      width: 100%;
-      max-width: 400px;
-    }
-    
-    .form-group {
-      margin-bottom: 1rem;
-    }
-    
-    .form-control {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      margin-top: 4px;
-    }
-    
-    h2 {
-      color: var(--primary-green);
-      text-align: center;
-      margin-bottom: 2rem;
-    }
+  styles: [
+    `
+      .login-container {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--light-gray);
+      }
 
-    .text-center {
-      text-align: center;
-    }
+      .login-card {
+        width: 100%;
+        max-width: 400px;
+      }
 
-    .mt-3 {
-      margin-top: 1rem;
-    }
+      .form-group {
+        margin-bottom: 1rem;
+      }
 
-    .text-primary {
-      color: var(--primary-green);
-      text-decoration: none;
-    }
+      .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-top: 4px;
+      }
 
-    .text-primary:hover {
-      text-decoration: underline;
-    }
-  `]
+      h2 {
+        color: var(--primary-green);
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .mt-3 {
+        margin-top: 1rem;
+      }
+
+      .text-primary {
+        color: var(--primary-green);
+        text-decoration: none;
+      }
+
+      .text-primary:hover {
+        text-decoration: underline;
+      }
+    `,
+  ],
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -101,8 +112,8 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", Validators.required],
     });
   }
 
@@ -112,12 +123,12 @@ export class LoginComponent {
       this.authService.login(email, password).subscribe({
         next: (response) => {
           this.authService.setToken(response.token);
-          this.router.navigate(['/dashboard']);
+          this.authService.setRole(response.role); // Stocker le rôle
+          this.authService.redirectToDashboard(); // Rediriger en fonction du rôle
         },
         error: (error) => {
-          console.error('Login failed:', error);
-          // Handle error (show message to user)
-        }
+          console.error("Erreur de connexion :", error);
+        },
       });
     }
   }

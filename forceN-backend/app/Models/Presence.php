@@ -5,8 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Mission extends Model
+class Presence extends Model
 {
     use HasFactory;
-    protected $fillable = ['titre', 'description', 'date_debut', 'date_fin', 'consultant_id'];
+
+
+    protected $table = 'presence';
+
+    protected $fillable = ['date', 'time', 'cours', 'notes', 'faith_declaration'];
 }
