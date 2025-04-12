@@ -1,11 +1,16 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { Component } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from "@angular/forms";
+import { Router } from "@angular/router";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
-  selector: 'app-register',
+  selector: "app-register",
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
@@ -15,111 +20,113 @@ import { AuthService } from '../../services/auth.service';
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label for="firstname">First Name</label>
-            <input 
-              type="text" 
-              id="firstname" 
-              formControlName="firstname" 
+            <input
+              type="text"
+              id="firstname"
+              formControlName="firstname"
               class="form-control"
-            >
+            />
           </div>
           <div class="form-group">
             <label for="name">Last Name</label>
-            <input 
-              type="text" 
-              id="name" 
-              formControlName="name" 
+            <input
+              type="text"
+              id="name"
+              formControlName="name"
               class="form-control"
-            >
+            />
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              formControlName="email" 
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
               class="form-control"
-            >
+            />
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input 
-              type="password" 
-              id="password" 
-              formControlName="password" 
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
               class="form-control"
-            >
+            />
           </div>
           <div class="form-group">
             <label for="role">Role</label>
-            <select 
-              id="role" 
-              formControlName="role" 
-              class="form-control"
-            >
+            <select id="role" formControlName="role" class="form-control">
               <option value="mentor">Mentor</option>
               <option value="consultant">Consultant</option>
             </select>
           </div>
-          <button type="submit" class="btn-primary" [disabled]="registerForm.invalid">
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="registerForm.invalid"
+          >
             Register
           </button>
           <p class="text-center mt-3">
-            Already have an account? 
+            Already have an account?
             <a href="/login" class="text-primary">Login here</a>
           </p>
         </form>
       </div>
     </div>
   `,
-  styles: [`
-    .login-container {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--light-gray);
-    }
-    
-    .login-card {
-      width: 100%;
-      max-width: 400px;
-    }
-    
-    .form-group {
-      margin-bottom: 1rem;
-    }
-    
-    .form-control {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      margin-top: 4px;
-    }
-    
-    h2 {
-      color: var(--primary-green);
-      text-align: center;
-      margin-bottom: 2rem;
-    }
+  styles: [
+    `
+      .login-container {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--light-gray);
+      }
 
-    .text-center {
-      text-align: center;
-    }
+      .login-card {
+        width: 100%;
+        max-width: 400px;
+      }
 
-    .mt-3 {
-      margin-top: 1rem;
-    }
+      .form-group {
+        margin-bottom: 1rem;
+      }
 
-    .text-primary {
-      color: var(--primary-green);
-      text-decoration: none;
-    }
+      .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-top: 4px;
+      }
 
-    .text-primary:hover {
-      text-decoration: underline;
-    }
-  `]
+      h2 {
+        color: var(--primary-green);
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .mt-3 {
+        margin-top: 1rem;
+      }
+
+      .text-primary {
+        color: var(--primary-green);
+        text-decoration: none;
+      }
+
+      .text-primary:hover {
+        text-decoration: underline;
+      }
+    `,
+  ],
 })
 export class RegisterComponent {
   registerForm: FormGroup;
@@ -130,11 +137,11 @@ export class RegisterComponent {
     private router: Router
   ) {
     this.registerForm = this.fb.group({
-      firstname: ['', Validators.required],
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      role: ['mentor', Validators.required]
+      firstname: ["", Validators.required],
+      name: ["", Validators.required],
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", [Validators.required, Validators.minLength(8)]],
+      role: ["mentor", Validators.required],
     });
   }
 
@@ -143,12 +150,19 @@ export class RegisterComponent {
       this.authService.register(this.registerForm.value).subscribe({
         next: (response) => {
           this.authService.setToken(response.token);
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(["/dashboard"]);
         },
         error: (error) => {
-          console.error('Registration failed:', error);
-          // Handle error (show message to user)
-        }
+          console.error("Registration failed:", error);
+          if (error.status === 422) {
+            const validationErrors = error.error.errors;
+            for (const key in validationErrors) {
+              if (validationErrors.hasOwnProperty(key)) {
+                alert(`${key}: ${validationErrors[key].join(", ")}`);
+              }
+            }
+          }
+        },
       });
     }
   }

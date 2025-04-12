@@ -19,9 +19,6 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->boolean('faith_declaration');
             $table->timestamps();
-
-
-
         });
     }
 

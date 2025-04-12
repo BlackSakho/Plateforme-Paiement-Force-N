@@ -158,15 +158,160 @@ import { MentorNavbarComponent } from "./mentor-navbar/mentor-navbar.component";
     `
       :host {
         display: block;
+        background-color: #f9fafb; /* Couleur de fond douce */
+        min-height: 100vh; /* S'assure que la page occupe toute la hauteur */
+        padding: 16px;
       }
-      .mat-mdc-card {
-        margin-bottom: 2rem;
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
       }
+
+      mat-card {
+        border-radius: 12px; /* Coins arrondis */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce */
+      }
+
+      mat-card-header {
+        background: linear-gradient(
+          to right,
+          #2563eb,
+          #1e40af
+        ); /* Dégradé bleu */
+        color: white;
+        padding: 16px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+      }
+
+      mat-card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+      }
+
+      mat-card-title mat-icon {
+        margin-right: 8px;
+        font-size: 1.8rem;
+      }
+
+      mat-card-subtitle {
+        font-size: 0.9rem;
+        color: #dbeafe; /* Couleur bleu clair */
+      }
+
+      mat-card-content {
+        padding: 24px;
+      }
+
+      mat-form-field {
+        width: 100%;
+      }
+
+      mat-checkbox {
+        margin-top: 16px;
+      }
+
+      .bg-blue-50 {
+        background-color: #eff6ff; /* Bleu clair */
+      }
+
+      .border-blue-200 {
+        border-color: #bfdbfe; /* Bordure bleu clair */
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      button mat-icon {
+        font-size: 1.2rem;
+      }
+
+      button[type="submit"] {
+        background: linear-gradient(
+          to right,
+          #2563eb,
+          #1e40af
+        ); /* Dégradé bleu */
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      button[type="submit"]:hover {
+        background: linear-gradient(
+          to right,
+          #1e40af,
+          #2563eb
+        ); /* Inverse le dégradé */
+      }
+
+      button[type="button"] {
+        color: #1e40af; /* Bleu foncé */
+        border-color: #1e40af; /* Bordure bleu foncé */
+      }
+
+      button[type="button"]:hover {
+        background-color: #e0f2fe; /* Bleu clair au survol */
+      }
+
       textarea {
-        min-height: 100px;
+        resize: none; /* Désactive le redimensionnement */
       }
-      .mat-icon {
-        vertical-align: middle;
+
+      .flex {
+        display: flex;
+      }
+
+      .justify-end {
+        justify-content: flex-end;
+      }
+
+      .space-x-4 > *:not(:last-child) {
+        margin-right: 16px;
+      }
+
+      .rounded-lg {
+        border-radius: 8px;
+      }
+
+      .shadow-lg {
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* Ombre douce */
+      }
+
+      .text-blue-600 {
+        color: #2563eb; /* Bleu */
+      }
+
+      .text-blue-800 {
+        color: #1e40af; /* Bleu foncé */
+      }
+
+      .text-sm {
+        font-size: 0.875rem;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .p-6 {
+        padding: 24px;
+      }
+
+      .max-w-4xl {
+        max-width: 1024px;
+      }
+
+      .mx-auto {
+        margin-left: auto;
+        margin-right: auto;
       }
     `,
   ],

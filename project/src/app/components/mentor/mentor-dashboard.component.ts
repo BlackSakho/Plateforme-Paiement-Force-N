@@ -19,240 +19,226 @@ import { MentorNavbarComponent } from "./mentor-navbar/mentor-navbar.component";
     MatIconModule,
     MatButtonModule,
     MatTableModule,
-    MatChipsModule, 
+    MatChipsModule,
     RouterModule,
   ],
   template: `
     <app-mentor-navbar></app-mentor-navbar>
-    <!-- Navbar mentor -->
-    <div class="container mx-auto p-6">
-      <h1 class="text-3xl font-bold mb-8 text-gray-800">
-        Tableau de bord Mentor
-      </h1>
+    <div class="dashboard-container">
+      <h1 class="dashboard-title">Tableau de bord Mentor</h1>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Box pour aller vers la page Attendance -->
+      <div class="stats-grid">
+        <!-- Présence -->
         <mat-card
-          class="hover-box bg-gradient-to-br from-blue-50 to-blue-100"
+          class="stat-card presence-card"
           (click)="navigateTo('attendance')"
         >
-          <mat-card-content class="p-6 text-center">
-            <mat-icon class="text-blue-700 text-5xl mb-4"
-              >check_circle</mat-icon
-            >
-            <h3 class="text-xl font-bold text-blue-900">Présence</h3>
-            <p class="text-blue-800 text-sm">
-              Gérez les présences des sessions
-            </p>
+          <mat-card-content>
+            <mat-icon class="stat-icon">check_circle</mat-icon>
+            <h3 class="stat-title">Présence</h3>
+            <p class="stat-description">Gérez les présences des sessions</p>
           </mat-card-content>
         </mat-card>
 
-        <!-- Box pour aller vers la page Missions -->
+        <!-- Missions -->
         <mat-card
-          class="hover-box bg-gradient-to-br from-green-50 to-green-100"
+          class="stat-card missions-card"
           (click)="navigateTo('missions')"
         >
-          <mat-card-content class="p-6 text-center">
-            <mat-icon class="text-green-700 text-5xl mb-4">work</mat-icon>
-            <h3 class="text-xl font-bold text-green-900">Missions</h3>
-            <p class="text-green-800 text-sm">
-              Consultez et gérez vos missions
-            </p>
+          <mat-card-content>
+            <mat-icon class="stat-icon">work</mat-icon>
+            <h3 class="stat-title">Missions</h3>
+            <p class="stat-description">Consultez et gérez vos missions</p>
           </mat-card-content>
         </mat-card>
 
-        <!-- Box pour aller vers la page Timesheets -->
+        <!-- Feuilles de présence -->
         <mat-card
-          class="hover-box bg-gradient-to-br from-purple-50 to-purple-100"
+          class="stat-card timesheets-card"
           (click)="navigateTo('timesheets')"
         >
-          <mat-card-content class="p-6 text-center">
-            <mat-icon class="text-purple-700 text-5xl mb-4">schedule</mat-icon>
-            <h3 class="text-xl font-bold text-purple-900">
-              Feuilles de présence
-            </h3>
-            <p class="text-purple-800 text-sm">
-              Suivez vos feuilles de présence
-            </p>
+          <mat-card-content>
+            <mat-icon class="stat-icon">schedule</mat-icon>
+            <h3 class="stat-title">Feuilles de présence</h3>
+            <p class="stat-description">Suivez vos feuilles de présence</p>
           </mat-card-content>
         </mat-card>
 
-        <!-- Box pour aller vers la page Invoices -->
+        <!-- Factures -->
         <mat-card
-          class="hover-box bg-gradient-to-br from-yellow-50 to-yellow-100"
+          class="stat-card invoices-card"
           (click)="navigateTo('invoices')"
         >
-          <mat-card-content class="p-6 text-center">
-            <mat-icon class="text-yellow-700 text-5xl mb-4">receipt</mat-icon>
-            <h3 class="text-xl font-bold text-yellow-900">Factures</h3>
-            <p class="text-yellow-800 text-sm">Gérez vos factures</p>
+          <mat-card-content>
+            <mat-icon class="stat-icon">receipt</mat-icon>
+            <h3 class="stat-title">Factures</h3>
+            <p class="stat-description">Gérez vos factures</p>
           </mat-card-content>
         </mat-card>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <!-- Statistiques des missions -->
-        <mat-card class="bg-gradient-to-br from-blue-50 to-blue-100">
-          <mat-card-content class="p-6">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-blue-800 text-sm font-medium">
-                  Missions actives
-                </p>
-                <h3 class="text-3xl font-bold text-blue-900">
-                  {{ activeMissionsCount }}
-                </h3>
-              </div>
-              <div class="bg-blue-200 p-3 rounded-full">
-                <mat-icon class="text-blue-700">work</mat-icon>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
+      <div class="recent-section">
+        <mat-card class="recent-card">
+          <mat-card-header>
+            <mat-card-title>Missions récentes</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <table mat-table [dataSource]="recentMissions" class="recent-table">
+              <ng-container matColumnDef="consultant">
+                <th mat-header-cell *matHeaderCellDef>Consultant</th>
+                <td mat-cell *matCellDef="let mission">
+                  {{ mission.consultant }}
+                </td>
+              </ng-container>
 
-      
+              <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef>Mission</th>
+                <td mat-cell *matCellDef="let mission">{{ mission.title }}</td>
+              </ng-container>
 
-       
-      </div>
-
-      <!-- Liste des missions récentes -->
-      <mat-card class="mb-8">
-        <mat-card-header class="bg-gray-50 p-4">
-          <mat-card-title class="text-xl font-semibold"
-            >Missions récentes</mat-card-title
-          >
-        </mat-card-header>
-        <mat-card-content class="p-4">
-          <table mat-table [dataSource]="recentMissions" class="w-full">
-            <ng-container matColumnDef="consultant">
-              <th mat-header-cell *matHeaderCellDef>Consultant</th>
-              <td mat-cell *matCellDef="let mission">
-                {{ mission.consultant }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="title">
-              <th mat-header-cell *matHeaderCellDef>Mission</th>
-              <td mat-cell *matCellDef="let mission">{{ mission.title }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef>Statut</th>
-              <td mat-cell *matCellDef="let mission">
-                <mat-chip-listbox>
-                  <mat-chip [ngClass]="getStatusClass(mission.status)">
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Statut</th>
+                <td mat-cell *matCellDef="let mission">
+                  <span
+                    class="status-chip"
+                    [ngClass]="getStatusClass(mission.status)"
+                  >
                     {{ mission.status }}
-                  </mat-chip>
-                </mat-chip-listbox>
-              </td>
-            </ng-container>
+                  </span>
+                </td>
+              </ng-container>
 
-            <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef>Actions</th>
-              <td mat-cell *matCellDef="let mission">
-                <button
-                  mat-icon-button
-                  color="primary"
-                  [routerLink]="['/missions', mission.id]"
-                >
-                  <mat-icon>visibility</mat-icon>
-                </button>
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-          </table>
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Activités récentes -->
-      <mat-card>
-        <mat-card-header class="bg-gray-50 p-4">
-          <mat-card-title class="text-xl font-semibold"
-            >Activités récentes</mat-card-title
-          >
-        </mat-card-header>
-        <mat-card-content class="p-4">
-          <div class="space-y-4">
-            <div
-              *ngFor="let activity of recentActivities"
-              class="flex items-start p-4 bg-gray-50 rounded-lg"
-            >
-              <div class="bg-white p-2 rounded-full mr-4">
-                <mat-icon [ngClass]="getActivityIconClass(activity.type)">
-                  {{ getActivityIcon(activity.type) }}
-                </mat-icon>
-              </div>
-              <div>
-                <p class="font-medium">{{ activity.description }}</p>
-                <p class="text-sm text-gray-600">
-                  {{ activity.date | date : "medium" }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   `,
   styles: [
     `
       :host {
         display: block;
+        background: linear-gradient(to bottom, #f9fafb, #e3f2fd);
+        min-height: 100vh;
+        padding: 16px;
       }
 
-      .hover-box {
-        cursor: pointer;
-        transition: transform 0.3s, box-shadow 0.3s;
+      .dashboard-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .dashboard-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #1e88e5;
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+
+      .stat-card {
         border-radius: 12px;
-        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        background: white;
       }
 
-      .hover-box:hover {
+      .stat-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
       }
 
-      mat-card-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+      .stat-icon {
+        font-size: 3rem;
+        color: #1e88e5;
+        margin-bottom: 10px;
       }
 
-      mat-icon {
-        transition: color 0.3s;
+      .stat-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #424242;
       }
 
-      mat-card:hover mat-icon {
-        color: #1e293b;
+      .stat-description {
+        font-size: 0.9rem;
+        color: #757575;
       }
 
-      .mat-mdc-card {
+      .presence-card {
+        background: linear-gradient(to right, #e3f2fd, #bbdefb);
+      }
+
+      .missions-card {
+        background: linear-gradient(to right, #e8f5e9, #c8e6c9);
+      }
+
+      .timesheets-card {
+        background: linear-gradient(to right, #ede7f6, #d1c4e9);
+      }
+
+      .invoices-card {
+        background: linear-gradient(to right, #fff8e1, #ffecb3);
+      }
+
+      .recent-section {
+        margin-top: 40px;
+      }
+
+      .recent-card {
         border-radius: 12px;
-        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       }
+
+      .recent-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .recent-table th {
+        text-align: left;
+        padding: 10px;
+        background: #f5f5f5;
+        color: #424242;
+      }
+
+      .recent-table td {
+        padding: 10px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .status-chip {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        text-transform: capitalize;
+      }
+
       .status-active {
-        background-color: #e0f2f1 !important;
-        color: #004d40 !important;
+        background-color: #c8e6c9;
+        color: #388e3c;
       }
+
       .status-completed {
-        background-color: #e8f5e9 !important;
-        color: #1b5e20 !important;
-      }
-      .status-pending {
-        background-color: #fff3e0 !important;
-        color: #e65100 !important;
-      }
-      .activity-icon-mission {
+        background-color: #bbdefb;
         color: #1976d2;
       }
-      .activity-icon-evaluation {
-        color: #7b1fa2;
-      }
-      .activity-icon-consultant {
-        color: #388e3c;
+
+      .status-pending {
+        background-color: #ffe0b2;
+        color: #f57c00;
       }
     `,
   ],

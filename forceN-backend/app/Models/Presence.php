@@ -12,5 +12,20 @@ class Presence extends Model
 
     protected $table = 'presence';
 
-    protected $fillable = ['date', 'time', 'cours', 'notes', 'faith_declaration'];
+    protected $fillable = [
+        'date',
+        'time',
+        'cours',
+        'notes',
+        'faith_declaration',
+        'status',
+        'validated_by_consultant',
+        'validated_by_certificate_manager',
+        'validated_by_finance',
+    ];
+
+    public function mentor()
+    {
+        return $this->belongsTo(User::class, 'mentor_id'); // Assurez-vous que `mentor_id` est la clé étrangère
+    }
 }
