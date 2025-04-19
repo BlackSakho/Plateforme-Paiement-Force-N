@@ -32,6 +32,15 @@ class PresenceController extends Controller
         $presences = Presence::with('mentor')->get(); // Inclure les informations du mentor
         return response()->json($presences);
     }
+    public function getUserPresences(Request $request)
+    {
+        $userId = $request->user()->id; // Récupérer l'ID de l'utilisateur connecté
+
+        // Récupérer les fiches de présence soumises par cet utilisateur
+        $presences = Presence::where('mentor_id', $userId)->get();
+
+        return response()->json($presences, 200);
+    }
 
     public function validateByConsultant($id)
     {
@@ -77,4 +86,6 @@ class PresenceController extends Controller
 
         return response()->json(['message' => 'Validé par le service finance', 'presence' => $presence], 200);
     }
+
+
 }

@@ -113,4 +113,13 @@ export class ApiService {
 
     return this.http.get<any>(`${this.apiUrl}/statistics`, { headers });
   }
+
+  getUserPresences(): Observable<any[]> {
+    const token = localStorage.getItem("token"); // Récupérer le token depuis le stockage local
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Ajouter le token dans l'en-tête
+    });
+
+    return this.http.get<any[]>(`${this.apiUrl}/user-presences`, { headers });
+  }
 }

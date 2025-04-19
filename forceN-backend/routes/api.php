@@ -37,4 +37,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/presences/{id}/validate/certificate-manager', [PresenceController::class, 'validateByCertificateManager']);
     Route::patch('/presences/{id}/validate/finance', [PresenceController::class, 'validateByFinance']);
     Route::get('/statistics', [StatisticsController::class, 'getStatistics']);
+    Route::get('/user-presences', [PresenceController::class, 'getUserPresences']);
 });

@@ -317,6 +317,7 @@ import { MentorNavbarComponent } from "./mentor-navbar/mentor-navbar.component";
   ],
 })
 export class AttendanceFormComponent implements OnInit {
+  attendance: any[] = []; // Declare the attendance property
   attendanceForm: FormGroup;
   isSubmitting = false;
   courses = [
@@ -381,5 +382,12 @@ export class AttendanceFormComponent implements OnInit {
     });
     this.attendanceForm.markAsPristine();
     this.attendanceForm.markAsUntouched();
+  }
+
+  loadAttendances() {
+    this.apiService.getUserPresences().subscribe((data) => {
+      console.log("Données reçues :", data);
+      this.attendance = data;
+    });
   }
 }

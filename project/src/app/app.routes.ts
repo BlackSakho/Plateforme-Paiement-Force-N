@@ -30,7 +30,6 @@ export const routes: Routes = [
     component: AttendanceFormComponent,
     canActivate: [AuthGuard, RoleGuard], // Protéger la route 'attendance'
     data: { roles: ["mentor"] }, // Seuls les mentors peuvent accéder
-
   },
   {
     path: "users",
@@ -43,7 +42,7 @@ export const routes: Routes = [
   {
     path: "missions",
     loadComponent: () =>
-      import("./components/missions/missions.component").then(
+      import("./components/mentor/missions/missions.component").then(
         (m) => m.MissionsComponent
       ),
     canActivate: [AuthGuard], // Protéger la route 'missions'
@@ -57,6 +56,14 @@ export const routes: Routes = [
     canActivate: [AuthGuard], // Protéger la route 'timesheets'
   },
   {
+    path: "user-attendance",
+    loadComponent: () =>
+      import("./components/mentor/user-attendance.component").then(
+        (m) => m.UserAttendanceComponent
+      ),
+    canActivate: [AuthGuard], // Protéger la route 'attendance-form'
+  },
+  {
     path: "invoices",
     loadComponent: () =>
       import("./components/invoices/invoices.component").then(
@@ -64,8 +71,6 @@ export const routes: Routes = [
       ),
     canActivate: [AuthGuard], // Protéger la route 'invoices'
   },
-
-  
 
   { path: "**", redirectTo: "/login" },
 ];

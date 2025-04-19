@@ -55,7 +55,7 @@ import { MentorNavbarComponent } from "./mentor-navbar/mentor-navbar.component";
         <!-- Feuilles de présence -->
         <mat-card
           class="stat-card timesheets-card"
-          (click)="navigateTo('timesheets')"
+          (click)="navigateTo('user-attendance')"
         >
           <mat-card-content>
             <mat-icon class="stat-icon">schedule</mat-icon>
