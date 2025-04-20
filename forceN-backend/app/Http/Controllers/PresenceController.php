@@ -53,7 +53,7 @@ class PresenceController extends Controller
         $presence->validated_by_consultant = true;
 
         // Vérifiez si tous les rôles ont validé
-        if ($presence->validated_by_consultant && $presence->validated_by_certificate_manager && $presence->validated_by_finance) {
+        if ($presence->validated_by_consultant && $presence->validated_by_finance) {
             $presence->status = 'validated'; // Mettre à jour le statut global
         }
 
@@ -79,25 +79,39 @@ class PresenceController extends Controller
 
     public function validateByFinance($id)
     {
+        // Récupérer la fiche de présence par son ID
         $presence = Presence::findOrFail($id);
+
+        // Mettre à jour la validation par le service finance
         $presence->validated_by_finance = true;
 
         // Vérifiez si tous les rôles ont validé
-        if ($presence->validated_by_consultant && $presence->validated_by_certificate_manager && $presence->validated_by_finance) {
+        if ($presence->validated_by_consultant && $presence->validated_by_finance) {
             $presence->status = 'validated'; // Mettre à jour le statut global
         }
 
+        // Sauvegarder les modifications dans la base de données
         $presence->save();
 
-        return response()->json(['message' => 'Validé par le service finance', 'presence' => $presence], 200);
+        // Retourner une réponse JSON
+        return response()->json([
+            'message' => 'Fiche validée par le service finance',
+            'presence' => $presence,
+        ], 200);
     }
 
     public function getConsultantValidatedPresences()
     {
-        // Récupérer les fiches validées par le consultant
         $presences = Presence::where('validated_by_consultant', true)
-            ->with(['mentor:id,firstname,name']) // Inclure les informations du mentor
-            ->get();
+            ->with(['mentor:id,firstname,name'])
+            ->get()
+            ->map(function ($presence) {
+                // Ajouter la propriété validated_by_finance si elle est absente
+                if (!isset($presence->validated_by_finance)) {
+                    $presence->validated_by_finance = false;
+                }
+                return $presence;
+            });
 
         return response()->json($presences, 200);
     }

@@ -109,8 +109,6 @@ export class ApiService {
     );
   }
 
- 
-
   validatePresenceByFinance(presenceId: number): Observable<any> {
     const token = localStorage.getItem("token"); // Récupérer le token depuis le localStorage
     const headers = new HttpHeaders({
@@ -119,7 +117,7 @@ export class ApiService {
 
     return this.http.put(
       `${this.apiUrl}/presences/${presenceId}/validate-by-finance`,
-      {},
+      {}, // Pas de corps nécessaire pour cette requête
       { headers }
     );
   }

@@ -54,7 +54,7 @@ import { AccountantNavbarComponent } from "./accountant-navbar.component"; // Im
               mat-raised-button
               color="primary"
               (click)="validateByFinance(presence)"
-              [disabled]="presence.validated_by_finance"
+              [disabled]="presence.validated_by_finance === true"
             >
               Valider par Finance
             </button>
@@ -96,12 +96,13 @@ export class ValidatedPresencesComponent implements OnInit {
 
   loadPresences() {
     this.apiService.getConsultantValidatedPresences().subscribe((data) => {
+      console.log("Données reçues :", data); // Vérifiez les données reçues
       this.presences = data;
     });
   }
 
   validateByFinance(presence: any) {
-      console.log("Tentative de validation pour la présence :", presence);
+    console.log("Tentative de validation pour la présence :", presence);
 
     this.apiService.validatePresenceByFinance(presence.id).subscribe({
       next: (response) => {

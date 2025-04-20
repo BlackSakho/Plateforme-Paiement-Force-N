@@ -28,14 +28,6 @@ import { AccountantNavbarComponent } from "./accountant-navbar.component";
           <span>💳</span> Valider les Paiements
         </button>
 
-        <button
-          mat-raised-button
-          color="accent"
-          routerLink="/accountant/invoices"
-          class="action-button"
-        >
-          <span>📄</span> Générer des Factures
-        </button>
 
         <button
           mat-raised-button
