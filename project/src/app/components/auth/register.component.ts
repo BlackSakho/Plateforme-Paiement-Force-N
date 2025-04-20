@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { RouterModule } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -12,117 +13,204 @@ import { AuthService } from "../../services/auth.service";
 @Component({
   selector: "app-register",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   template: `
-    <div class="login-container">
-      <div class="login-card card">
-        <h2>Inscription - FORCE-N Platform</h2>
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-          <div class="form-group">
-            <label for="firstname">First Name</label>
-            <input
-              type="text"
-              id="firstname"
-              formControlName="firstname"
-              class="form-control"
-            />
-          </div>
-          <div class="form-group">
-            <label for="name">Last Name</label>
-            <input
-              type="text"
-              id="name"
-              formControlName="name"
-              class="form-control"
-            />
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              formControlName="email"
-              class="form-control"
-            />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              formControlName="password"
-              class="form-control"
-            />
-          </div>
-          <div class="form-group">
-            <label for="role">Role</label>
-            <select id="role" formControlName="role" class="form-control">
-              <option value="mentor">Mentor</option>
-              <option value="consultant">Consultant</option>
-            </select>
-          </div>
-          <button
-            type="submit"
-            class="btn-primary"
-            [disabled]="registerForm.invalid"
-          >
-            Register
-          </button>
-          <p class="text-center mt-3">
-            Already have an account?
-            <a href="/login" class="text-primary">Login here</a>
-          </p>
-        </form>
+    <div class="login-page">
+      <div class="login-wrapper">
+        <div class="login-illustration">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/4341/4341139.png"
+            alt="Register Illustration"
+          />
+        </div>
+
+        <div class="login-card">
+          <h2>Rejoignez <span>FORCE-N</span></h2>
+          <p class="subtitle">Créez un compte pour accéder à votre espace</p>
+
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="firstname">Prénom</label>
+              <input
+                type="text"
+                id="firstname"
+                formControlName="firstname"
+                placeholder="Votre prénom"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="name">Nom</label>
+              <input
+                type="text"
+                id="name"
+                formControlName="name"
+                placeholder="Votre nom"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Adresse e-mail</label>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                placeholder="votre@email.com"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="password">Mot de passe</label>
+              <input
+                type="password"
+                id="password"
+                formControlName="password"
+                placeholder="********"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="role">Rôle</label>
+              <select id="role" formControlName="role">
+                <option value="mentor">Mentor</option>
+                <option value="consultant">Consultant</option>
+                <option value="comptable">Agent Comptable</option>
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              [disabled]="registerForm.invalid"
+              class="btn-login"
+            >
+              S'inscrire
+            </button>
+
+            <p class="bottom-text">
+              Vous avez déjà un compte ?
+              <a routerLink="/login">Se connecter</a>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   `,
   styles: [
     `
-      .login-container {
-        height: 100vh;
+      .login-page {
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--light-gray);
+        min-height: 100vh;
+        background: linear-gradient(to right, #ffffff, #f1f7ff);
+        font-family: "Segoe UI", sans-serif;
+        padding: 2rem;
+      }
+
+      .login-wrapper {
+        display: flex;
+        background-color: white;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+        max-width: 900px;
+        width: 100%;
+        flex-direction: column;
+      }
+
+      @media (min-width: 768px) {
+        .login-wrapper {
+          flex-direction: row;
+        }
+      }
+
+      .login-illustration {
+        background-color: #f7f9fc;
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+      }
+
+      .login-illustration img {
+        max-width: 100%;
+        height: auto;
       }
 
       .login-card {
-        width: 100%;
-        max-width: 400px;
+        flex: 1;
+        padding: 2rem;
       }
 
-      .form-group {
-        margin-bottom: 1rem;
-      }
-
-      .form-control {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        margin-top: 4px;
-      }
-
-      h2 {
-        color: var(--primary-green);
+      .login-card h2 {
         text-align: center;
+        color: #0057a0;
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      .login-card h2 span {
+        color: #f7941d;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: #666;
+        font-size: 1rem;
         margin-bottom: 2rem;
       }
 
-      .text-center {
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1rem;
+      }
+
+      .btn-login {
+        width: 100%;
+        padding: 0.9rem;
+        background-color: #0057a0;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .btn-login:hover {
+        background-color: #003f7d;
+      }
+
+      .bottom-text {
         text-align: center;
-      }
-
-      .mt-3 {
         margin-top: 1rem;
+        font-size: 0.95rem;
       }
 
-      .text-primary {
-        color: var(--primary-green);
+      .bottom-text a {
+        color: #f7941d;
         text-decoration: none;
+        font-weight: bold;
       }
 
-      .text-primary:hover {
+      .bottom-text a:hover {
         text-decoration: underline;
       }
     `,

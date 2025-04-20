@@ -70,7 +70,7 @@ class AuthController extends Controller
                 'regex:/\d/',           // Doit contenir un chiffre
                 'regex:/[@$!%*?&]/'     // Doit contenir un caractère spécial
             ],
-            'role' => ['required', Rule::in(['admin', 'consultant', 'mentor'])],
+            'role' => ['required', Rule::in(['admin', 'consultant', 'mentor', 'comptable'])],
         ]);
 
         if ($validator->fails()) {
@@ -100,26 +100,24 @@ class AuthController extends Controller
         }
         return response()->json($user, 200);
     }
-    public function user(Request $request){
+    public function user(Request $request)
+    {
         return response()->json($request->user(), 200);
     }
     /**
- * Déconnexion de l'utilisateur.
- */
-public function logout(Request $request)
-{
-    // Récupérer l'utilisateur authentifié
-    $user = $request->user();
+     * Déconnexion de l'utilisateur.
+     */
+    public function logout(Request $request)
+    {
+        $user = $request->user(); // Récupérer l'utilisateur authentifié
 
-    if ($user) {
-        // Révoquer tous les tokens de l'utilisateur
-        $user->tokens()->delete();
+        if ($user) {
+            $user->tokens()->delete(); // Révoquer tous les tokens de l'utilisateur
+            return response()->json(['message' => 'Déconnexion réussie'], 200);
+        }
 
-        return response()->json(['message' => 'Déconnexion réussie'], 200);
+        return response()->json(['message' => 'Aucun utilisateur authentifié'], 401);
     }
-
-    return response()->json(['message' => 'Aucun utilisateur authentifié'], 401);
-}
 
     /**
      * Mettre à jour un utilisateur.
@@ -145,7 +143,7 @@ public function logout(Request $request)
                 'regex:/\d/',
                 'regex:/[@$!%*?&]/'
             ],
-            'role' => ['sometimes', Rule::in(['admin', 'consultant', 'mentor'])],
+            'role' => ['sometimes', Rule::in(['admin', 'consultant', 'mentor', 'comptable'])],
         ]);
 
         if ($validator->fails()) {
@@ -177,5 +175,4 @@ public function logout(Request $request)
         $user->delete();
         return response()->json(['message' => 'Utilisateur supprimé avec succès'], 200);
     }
-
 }

@@ -8,5 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Mission extends Model
 {
     use HasFactory;
-    protected $fillable = ['titre', 'description', 'date_debut', 'date_fin', 'consultant_id'];
+
+    protected $fillable = [
+        'title',
+        'description',
+        'date',
+        'time',
+        'mentor_id',
+        'status',
+    ];
+
+    // Relation avec le mentor (utilisateur)
+    public function mentor()
+    {
+        return $this->belongsTo(User::class, 'mentor_id');
+    }
 }

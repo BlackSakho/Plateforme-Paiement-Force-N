@@ -1,14 +1,15 @@
 import { Routes } from "@angular/router";
+import { HomeComponent } from "./components/home/home.component"; // Importer le composant HomeComponent
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { LoginComponent } from "./components/auth/login.component";
 import { RegisterComponent } from "./components/auth/register.component";
 import { AuthGuard } from "./guards/auth.guard";
-import { RoleGuard } from "./guards/role.guard"; // Importer le RoleGuard
-import { MentorDashboardComponent } from "./components/mentor/mentor-dashboard.component"; // Importer le MentorDashboardComponent
+import { RoleGuard } from "./guards/role.guard";
+import { MentorDashboardComponent } from "./components/mentor/mentor-dashboard.component";
 import { AttendanceFormComponent } from "./components/mentor/attendance-form.component";
 
 export const routes: Routes = [
-  { path: "", redirectTo: "/login", pathMatch: "full" },
+  { path: "", component: HomeComponent }, // Route par défaut pour la page d'accueil
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
 
@@ -17,19 +18,19 @@ export const routes: Routes = [
     path: "dashboard",
     component: DashboardComponent,
     canActivate: [AuthGuard],
-    data: { roles: ["admin"] }, // La garde d'authentification protège cette route
+    data: { roles: ["admin"] },
   },
   {
     path: "mentor-dashboard",
     component: MentorDashboardComponent,
     canActivate: [AuthGuard, RoleGuard],
-    data: { roles: ["mentor"] }, // Seuls les mentors peuvent accéder
+    data: { roles: ["mentor"] },
   },
   {
     path: "attendance",
     component: AttendanceFormComponent,
-    canActivate: [AuthGuard, RoleGuard], // Protéger la route 'attendance'
-    data: { roles: ["mentor"] }, // Seuls les mentors peuvent accéder
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ["mentor"] },
   },
   {
     path: "users",
@@ -37,7 +38,7 @@ export const routes: Routes = [
       import("./components/users/users.component").then(
         (m) => m.UsersComponent
       ),
-    canActivate: [AuthGuard], // Protéger également la route 'users'
+    canActivate: [AuthGuard],
   },
   {
     path: "missions",
@@ -45,7 +46,7 @@ export const routes: Routes = [
       import("./components/mentor/missions/missions.component").then(
         (m) => m.MissionsComponent
       ),
-    canActivate: [AuthGuard], // Protéger la route 'missions'
+    canActivate: [AuthGuard],
   },
   {
     path: "timesheets",
@@ -53,7 +54,7 @@ export const routes: Routes = [
       import("./components/timesheets/timesheets.component").then(
         (m) => m.TimesheetsComponent
       ),
-    canActivate: [AuthGuard], // Protéger la route 'timesheets'
+    canActivate: [AuthGuard],
   },
   {
     path: "user-attendance",
@@ -61,7 +62,7 @@ export const routes: Routes = [
       import("./components/mentor/user-attendance.component").then(
         (m) => m.UserAttendanceComponent
       ),
-    canActivate: [AuthGuard], // Protéger la route 'attendance-form'
+    canActivate: [AuthGuard],
   },
   {
     path: "invoices",
@@ -69,8 +70,46 @@ export const routes: Routes = [
       import("./components/invoices/invoices.component").then(
         (m) => m.InvoicesComponent
       ),
-    canActivate: [AuthGuard], // Protéger la route 'invoices'
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "consultant-missions",
+    loadComponent: () =>
+      import("./components/consultant/consultant-missions.component").then(
+        (m) => m.ConsultantMissionsComponent
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ["admin"] },
   },
 
-  { path: "**", redirectTo: "/login" },
+  // Routes pour le comptable
+  {
+    path: "accountant-dashboard",
+    loadComponent: () =>
+      import("./components/accountant/accountant-dashboard.component").then(
+        (m) => m.AccountantDashboardComponent
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ["comptable"] },
+  },
+  {
+    path: "accountant-payments",
+    loadComponent: () =>
+      import("./components/accountant/accountant-payments.component").then(
+        (m) => m.AccountantPaymentsComponent
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ["comptable"] },
+  },
+  {
+    path: "validated-presences",
+    loadComponent: () =>
+      import("./components/accountant/validated-presences.component").then(
+        (m) => m.ValidatedPresencesComponent
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ["comptable"] },
+  },
+
+  { path: "**", redirectTo: "" }, // Rediriger toutes les routes non définies vers la page d'accueil
 ];

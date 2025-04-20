@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\StatisticsController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,7 +36,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/presences', [PresenceController::class, 'index']);
     Route::patch('/presences/{id}/validate/consultant', [PresenceController::class, 'validateByConsultant']);
     Route::patch('/presences/{id}/validate/certificate-manager', [PresenceController::class, 'validateByCertificateManager']);
-    Route::patch('/presences/{id}/validate/finance', [PresenceController::class, 'validateByFinance']);
+    Route::put('/presences/{id}/validate-by-finance', [PresenceController::class, 'validateByFinance']);
     Route::get('/statistics', [StatisticsController::class, 'getStatistics']);
     Route::get('/user-presences', [PresenceController::class, 'getUserPresences']);
+    Route::get('/missions', [MissionController::class, 'index']); // Récupérer toutes les missions
+    Route::post('/missions', [MissionController::class, 'store']); // Créer une mission
+    Route::patch('/missions/{id}/status', [MissionController::class, 'updateStatus']); // Mettre à jour le statut
+    Route::put('/missions/{id}/status', [MissionController::class, 'updateStatus']); // Mettre à jour le statut
+    Route::get('/mentors', [UserController::class, 'getMentors']);
+    Route::get('/mentor/missions', [MissionController::class, 'getMentorMissions']);
+    Route::get('/consultant-validated-presences', [PresenceController::class, 'getConsultantValidatedPresences']);
 });

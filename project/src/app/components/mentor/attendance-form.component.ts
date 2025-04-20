@@ -322,7 +322,7 @@ export class AttendanceFormComponent implements OnInit {
   isSubmitting = false;
   courses = [
     { id: "mentorat", name: "Mentorat" },
-    { id: "boot", name: "Bootcamp" },
+    { id: "bootcamp", name: "Bootcamp" },
   ];
 
   constructor(
@@ -352,7 +352,7 @@ export class AttendanceFormComponent implements OnInit {
       this.apiService.submitPresence(presenceData).subscribe({
         next: (response) => {
           this.snackBar.open("Présence enregistrée avec succès", "Fermer", {
-            duration: 3000,
+            duration: 10000,
             panelClass: ["success-snackbar"],
           });
           this.resetForm();
@@ -361,7 +361,7 @@ export class AttendanceFormComponent implements OnInit {
           const errorMessage =
             error?.error?.message || "Erreur lors de l'enregistrement";
           this.snackBar.open(errorMessage, "Fermer", {
-            duration: 3000,
+            duration: 10000,
             panelClass: ["error-snackbar"],
           });
         },

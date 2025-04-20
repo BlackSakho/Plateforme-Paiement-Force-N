@@ -52,6 +52,7 @@ import { ApiService } from "../../services/api.service";
             <ng-container matColumnDef="mentor">
               <th mat-header-cell *matHeaderCellDef>Mentor</th>
               <td mat-cell *matCellDef="let presence">
+                {{ presence.mentor?.firstname }}
                 {{ presence.mentor?.name || "Non spécifié" }}
               </td>
             </ng-container>

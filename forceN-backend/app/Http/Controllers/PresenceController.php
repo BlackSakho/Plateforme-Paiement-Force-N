@@ -10,28 +10,33 @@ class PresenceController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'date' => 'required|date',
             'time' => 'required',
-            'cours' => 'required',
-            'faith_declaration' => 'required|boolean'
+            'cours' => 'required|string',
+            'notes' => 'nullable|string',
+            'faith_declaration' => 'required|boolean',
         ]);
 
-        // Convertir la date au format 'YYYY-MM-DD'
-        $data = $request->all();
-        $data['date'] = date('Y-m-d', strtotime($request->date));
-        $data['mentor_id'] = $request->user()->id; // Associer l'utilisateur authentifié
+        // Convertir la date au format attendu par MySQL
+        $validatedData['date'] = date('Y-m-d', strtotime($validatedData['date']));
 
-        $presence = Presence::create($data);
+        // Ajouter l'ID du mentor connecté
+        $validatedData['mentor_id'] = $request->user()->id;
 
-        return response()->json(['message' => 'Présence enregistrée', 'presence' => $presence], 201);
+        // Créer la feuille de présence
+        $presence = Presence::create($validatedData);
+
+        return response()->json(['message' => 'Présence enregistrée avec succès', 'presence' => $presence], 201);
     }
 
     public function index()
     {
-        $presences = Presence::with('mentor')->get(); // Inclure les informations du mentor
+        // Inclure les informations du mentor avec first_name et name
+        $presences = Presence::with(['mentor:id,firstname,name'])->get();
         return response()->json($presences);
     }
+
     public function getUserPresences(Request $request)
     {
         $userId = $request->user()->id; // Récupérer l'ID de l'utilisateur connecté
@@ -87,5 +92,13 @@ class PresenceController extends Controller
         return response()->json(['message' => 'Validé par le service finance', 'presence' => $presence], 200);
     }
 
+    public function getConsultantValidatedPresences()
+    {
+        // Récupérer les fiches validées par le consultant
+        $presences = Presence::where('validated_by_consultant', true)
+            ->with(['mentor:id,firstname,name']) // Inclure les informations du mentor
+            ->get();
 
+        return response()->json($presences, 200);
+    }
 }

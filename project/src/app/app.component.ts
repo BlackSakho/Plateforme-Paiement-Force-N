@@ -33,6 +33,10 @@ import { Router } from "@angular/router"; // Import du Router
       <button mat-icon-button>
         <mat-icon>notifications</mat-icon>
       </button>
+      <span *ngIf="currentUser">
+        {{ currentUser.firstname }} {{ currentUser.name }}
+      </span>
+      
       <button mat-icon-button>
         <mat-icon>account_circle</mat-icon>
       </button>
@@ -60,7 +64,7 @@ import { Router } from "@angular/router"; // Import du Router
             <mat-icon>people</mat-icon>
             <span>Utilisateurs</span>
           </a>
-          <a mat-list-item routerLink="/missions" routerLinkActive="active">
+          <a mat-list-item routerLink="/consultant-missions" routerLinkActive="active">
             <mat-icon>work</mat-icon>
             <span>Missions</span>
           </a>
@@ -163,8 +167,13 @@ export class AppComponent {
   @ViewChild("sidenav") sidenav: any;
 
   title = "Plateforme de Gestion";
+  currentUser: any; // Propriété pour stocker l'utilisateur connecté
 
   constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit() {
+    this.currentUser = this.authService.getCurrentUser(); // Récupérer l'utilisateur connecté
+  }
 
   logout() {
     this.authService.logout().subscribe({
@@ -173,6 +182,10 @@ export class AppComponent {
       },
       error: (error) => {
         console.error("Erreur lors de la déconnexion :", error);
+        if (error.status === 401) {
+          alert("Votre session a expiré. Veuillez vous reconnecter.");
+          this.router.navigate(["/login"]);
+        }
       },
     });
   }

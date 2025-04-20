@@ -7,6 +7,8 @@ import { MatCardModule } from "@angular/material/card";
 import { ApiService } from "../../../services/api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MentorNavbarComponent } from "../mentor-navbar/mentor-navbar.component";
+import { MatSelectModule } from "@angular/material/select";
+import { MatOptionModule } from "@angular/material/core";
 
 @Component({
   selector: "app-missions",
@@ -18,6 +20,8 @@ import { MentorNavbarComponent } from "../mentor-navbar/mentor-navbar.component"
     MatIconModule,
     MatCardModule,
     MentorNavbarComponent,
+    MatSelectModule,
+    MatOptionModule,
   ],
   template: `
     <app-mentor-navbar></app-mentor-navbar>
@@ -51,13 +55,30 @@ import { MentorNavbarComponent } from "../mentor-navbar/mentor-navbar.component"
               </td>
             </ng-container>
 
+            <!-- Colonne Date -->
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>Date</th>
+              <td mat-cell *matCellDef="let mission">{{ mission.date }}</td>
+            </ng-container>
+
+            <!-- Colonne Heure -->
+            <ng-container matColumnDef="time">
+              <th mat-header-cell *matHeaderCellDef>Heure</th>
+              <td mat-cell *matCellDef="let mission">{{ mission.time }}</td>
+            </ng-container>
+
             <!-- Colonne Statut -->
             <ng-container matColumnDef="status">
               <th mat-header-cell *matHeaderCellDef>Statut</th>
               <td mat-cell *matCellDef="let mission">
-                <span [ngClass]="getStatusClass(mission.status)">
-                  {{ mission.status }}
-                </span>
+                <mat-select
+                  [(value)]="mission.status"
+                  (selectionChange)="updateStatus(mission)"
+                >
+                  <mat-option value="pending">En attente</mat-option>
+                  <mat-option value="active">Active</mat-option>
+                  <mat-option value="completed">Terminée</mat-option>
+                </mat-select>
               </td>
             </ng-container>
 
@@ -104,9 +125,9 @@ import { MentorNavbarComponent } from "../mentor-navbar/mentor-navbar.component"
       mat-card-header {
         background: linear-gradient(
           to right,
-          #16a34a,
-          #15803d
-        ); /* Dégradé vert */
+          #3b82f6,
+          /* Bleu clair */ #1d4ed8 /* Bleu foncé */
+        ); /* Dégradé bleu */
         color: white;
         padding: 16px;
         border-top-left-radius: 12px;
@@ -127,7 +148,7 @@ import { MentorNavbarComponent } from "../mentor-navbar/mentor-navbar.component"
 
       mat-card-subtitle {
         font-size: 0.9rem;
-        color: #d1fae5; /* Couleur vert clair */
+        color: #dbeafe; /* Couleur bleu clair */
       }
 
       mat-card-content {
@@ -157,7 +178,14 @@ import { MentorNavbarComponent } from "../mentor-navbar/mentor-navbar.component"
 })
 export class MissionsComponent implements OnInit {
   missions: any[] = [];
-  displayedColumns: string[] = ["title", "description", "status", "actions"];
+  displayedColumns: string[] = [
+    "title",
+    "description",
+    "date",
+    "time",
+    "status",
+    "actions",
+  ];
 
   constructor(private apiService: ApiService, private snackBar: MatSnackBar) {}
 
@@ -166,10 +194,16 @@ export class MissionsComponent implements OnInit {
   }
 
   loadMissions() {
-    this.apiService.getMissions().subscribe((data) => {
-      this.missions = data.filter(
-        (mission: any) => mission.assignedToCurrentUser
-      );
+    this.apiService.getMentorMissions().subscribe({
+      next: (data) => {
+        this.missions = data; // Charger les missions assignées au mentor connecté
+      },
+      error: (error) => {
+        console.error("Erreur lors du chargement des missions :", error);
+        this.snackBar.open("Erreur lors du chargement des missions", "Fermer", {
+          duration: 5000,
+        });
+      },
     });
   }
 
@@ -192,5 +226,25 @@ export class MissionsComponent implements OnInit {
       default:
         return "";
     }
+  }
+
+  updateStatus(mission: any) {
+    this.apiService.updateMissionStatus(mission.id, mission.status).subscribe({
+      next: () => {
+        this.snackBar.open("Statut de la mission mis à jour", "Fermer", {
+          duration: 3000,
+        });
+      },
+      error: (error) => {
+        console.error("Erreur lors de la mise à jour du statut :", error);
+        this.snackBar.open(
+          "Erreur lors de la mise à jour du statut",
+          "Fermer",
+          {
+            duration: 5000,
+          }
+        );
+      },
+    });
   }
 }

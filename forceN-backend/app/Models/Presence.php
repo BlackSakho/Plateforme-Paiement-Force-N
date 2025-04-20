@@ -18,6 +18,7 @@ class Presence extends Model
         'cours',
         'notes',
         'faith_declaration',
+        'mentor_id',
         'status',
         'validated_by_consultant',
         'validated_by_certificate_manager',
