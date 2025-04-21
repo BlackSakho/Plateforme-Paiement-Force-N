@@ -79,7 +79,8 @@ export class AccountantPaymentsComponent implements OnInit {
   }
 
   loadPresences() {
-    this.apiService.getPendingPresences().subscribe((data) => {
+    this.apiService.getConsultantValidatedPresences().subscribe((data) => {
+      console.log("Données reçues :", data); // Vérifiez les données reçues
       this.presences = data;
     });
   }

@@ -26,7 +26,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('mentor_id')->references('id')->on('users')->onDelete('cascade');
-    
         });
     }
 

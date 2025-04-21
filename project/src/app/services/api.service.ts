@@ -200,4 +200,10 @@ export class ApiService {
       { headers }
     );
   }
+  getNotifications(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/notifications`);
+  }
+
 }
+
+  

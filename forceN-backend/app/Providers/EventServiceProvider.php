@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\PresenceSubmitted;
+use App\Events\PresenceValidatedByAccountant;
+use App\Events\PresenceValidatedByConsultant;
+use App\Listeners\SendPresenceNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,6 +22,16 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        PresenceSubmitted::class => [
+            SendPresenceNotification::class,
+        ],
+        PresenceValidatedByConsultant::class => [
+            SendPresenceNotification::class,
+        ],
+        PresenceValidatedByAccountant::class => [
+            SendPresenceNotification::class,
+        ],
+
     ];
 
     /**

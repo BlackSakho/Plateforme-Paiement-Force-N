@@ -5,9 +5,11 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatListModule } from "@angular/material/list";
 import { MatIconModule } from "@angular/material/icon";
+import { MatMenuModule } from "@angular/material/menu";
 import { CommonModule } from "@angular/common"; // Importer CommonModule
 import { AuthService } from "./services/auth.service"; // Import du service AuthService
 import { Router } from "@angular/router"; // Import du Router
+import { NotificationService } from "./services/notification.service"; // Import du service NotificationService
 
 @Component({
   selector: "app-root",
@@ -20,9 +22,11 @@ import { Router } from "@angular/router"; // Import du Router
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
-    MatListModule,
     MatIconModule,
+    MatMenuModule,
+    MatListModule, // Ensure MatListModule is imported
   ],
+
   template: `
     <mat-toolbar *ngIf="shouldShowAdminNavbar()" color="primary">
       <button mat-icon-button (click)="sidenav.toggle()">
@@ -37,6 +41,20 @@ import { Router } from "@angular/router"; // Import du Router
       <span *ngIf="currentUser">
         {{ currentUser.firstname }} {{ currentUser.name }}
       </span>
+
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>notifications</mat-icon>
+        <span *ngIf="notifications.length > 0" class="notification-badge">
+          {{ notifications.length }}
+        </span>
+      </button>
+      <mat-menu #menu="matMenu">
+        <ng-container *ngFor="let notification of notifications">
+          <button mat-menu-item>
+            {{ notification.data.message }}
+          </button>
+        </ng-container>
+      </mat-menu>
 
       <button mat-icon-button>
         <mat-icon>account_circle</mat-icon>
@@ -174,6 +192,17 @@ import { Router } from "@angular/router"; // Import du Router
         object-fit: cover;
         border: 2px solid white;
       }
+
+      .notification-badge {
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        padding: 4px 8px;
+        font-size: 12px;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
     `,
   ],
 })
@@ -183,8 +212,13 @@ export class AppComponent {
   title = "Plateforme de Gestion";
   currentUser: any; // Propriété pour stocker l'utilisateur connecté
   avatarUrl: string = ""; // URL de l'avatar
+  notifications: any[] = []; // Propriété pour stocker les notifications
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit() {
     this.currentUser = this.authService.getCurrentUser(); // Récupérer l'utilisateur connecté
@@ -198,6 +232,8 @@ export class AppComponent {
       const name = this.currentUser?.name || "";
       this.avatarUrl = this.generateInitials(firstname, name);
     }
+
+    this.loadNotifications(); // Charger les notifications
   }
 
   // Méthode pour générer des initiales
@@ -227,5 +263,11 @@ export class AppComponent {
 
     // Afficher le navbar par défaut uniquement pour les administrateurs
     return role === "consultant" && !currentRoute.startsWith("/mentor");
+  }
+
+  loadNotifications() {
+    this.notificationService.getNotifications().subscribe((data) => {
+      this.notifications = data;
+    });
   }
 }

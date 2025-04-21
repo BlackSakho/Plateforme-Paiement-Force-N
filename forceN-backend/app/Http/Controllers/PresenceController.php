@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Presence;
 use Illuminate\Http\Request;
+use App\Events\PresenceValidatedByConsultant;
+use App\Events\PresenceValidatedByAccountant;
+use App\Events\PresenceSubmitted;
 
 class PresenceController extends Controller
 {
@@ -26,6 +29,8 @@ class PresenceController extends Controller
 
         // Créer la feuille de présence
         $presence = Presence::create($validatedData);
+        // Déclencher l'événement
+        event(new PresenceSubmitted($presence));
 
         return response()->json(['message' => 'Présence enregistrée avec succès', 'presence' => $presence], 201);
     }
@@ -58,6 +63,8 @@ class PresenceController extends Controller
         }
 
         $presence->save();
+        // Déclencher l'événement
+        event(new PresenceValidatedByConsultant($presence));
 
         return response()->json(['message' => 'Validé par le consultant', 'presence' => $presence], 200);
     }
@@ -92,6 +99,8 @@ class PresenceController extends Controller
 
         // Sauvegarder les modifications dans la base de données
         $presence->save();
+        // Déclencher l'événement
+        event(new PresenceValidatedByAccountant($presence));
 
         // Retourner une réponse JSON
         return response()->json([

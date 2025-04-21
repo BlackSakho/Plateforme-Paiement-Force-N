@@ -56,7 +56,7 @@ import { AccountantNavbarComponent } from "./accountant-navbar.component"; // Im
               (click)="validateByFinance(presence)"
               [disabled]="presence.validated_by_finance === true"
             >
-              Valider par Finance
+              Valider
             </button>
           </td>
         </ng-container>

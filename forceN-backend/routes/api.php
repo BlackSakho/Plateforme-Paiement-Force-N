@@ -5,6 +5,7 @@ use App\Http\Controllers\MissionController;
 use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,4 +47,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/mentors', [UserController::class, 'getMentors']);
     Route::get('/mentor/missions', [MissionController::class, 'getMentorMissions']);
     Route::get('/consultant-validated-presences', [PresenceController::class, 'getConsultantValidatedPresences']);
+    Route::get('/notifications', [NotificationController::class, 'index']);
 });
