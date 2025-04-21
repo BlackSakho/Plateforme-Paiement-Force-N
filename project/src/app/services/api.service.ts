@@ -69,10 +69,17 @@ export class ApiService {
     return this.http.get<Invoice[]>(`${this.apiUrl}/invoices`);
   }
 
-  generateInvoice(missionId: number): Observable<Invoice> {
-    return this.http.post<Invoice>(`${this.apiUrl}/invoices/generate`, {
-      missionId,
+  generateInvoice(presenceId: number) {
+    const token = localStorage.getItem("token"); // Récupérer le jeton depuis le stockage local
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Ajouter le jeton dans l'en-tête
     });
+
+    return this.http.post<any>(
+      `${this.apiUrl}/invoices/generate`, // Correction de l'URL
+      { presenceId },
+      { headers }
+    );
   }
 
   submitPresence(presence: {
@@ -203,7 +210,4 @@ export class ApiService {
   getNotifications(): Observable<any> {
     return this.http.get(`${this.apiUrl}/notifications`);
   }
-
 }
-
-  

@@ -3,7 +3,7 @@ export interface User {
   firstname: string;
   name: string;
   email: string;
-  role: 'consultant' | 'mentor' | 'admin'|'comptable';
+  role: "consultant" | "mentor" | "admin" | "comptable";
   email_verified_at?: Date;
   created_at?: Date;
   updated_at?: Date;
@@ -14,7 +14,7 @@ export interface RegisterRequest {
   name: string;
   email: string;
   password: string;
-  role?: 'consultant' | 'mentor' | 'admin'|'comptable';
+  role?: "consultant" | "mentor" | "admin" | "comptable";
 }
 export interface Mission {
   id: number;
@@ -22,7 +22,7 @@ export interface Mission {
   description: string;
   startDate: Date;
   endDate: Date;
-  status: 'pending' | 'in-progress' | 'completed';
+  status: "pending" | "in-progress" | "completed";
   userId: number;
   rate: number;
 }
@@ -33,20 +33,20 @@ export interface TimeSheet {
   missionId: number;
   date: Date;
   hours: number;
-  status: 'pending' | 'approved' | 'rejected';
+  status: "pending" | "approved" | "rejected";
 }
 
 export interface Invoice {
   id: number;
-  userId: number;
-  missionId: number;
+  presence_id: number;
+  mentor_name: string;
+  accountant_name: string;
   amount: number;
-  status: 'pending' | 'paid';
-  dueDate: Date;
-  createdAt: Date;
+  date: string;
+  invoiceUrl?: string; // Ajout de la propriété optionnelle
 }
 
-export interface Presence{
+export interface Presence {
   id: number;
   date: Date;
   hours: number;

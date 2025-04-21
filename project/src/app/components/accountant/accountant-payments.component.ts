@@ -23,7 +23,9 @@ import { AccountantNavbarComponent } from "./accountant-navbar.component"; // Im
         <!-- Colonne Mentor -->
         <ng-container matColumnDef="mentor">
           <th mat-header-cell *matHeaderCellDef>Mentor</th>
-          <td mat-cell *matCellDef="let presence">{{ presence.mentorName }}</td>
+          <td mat-cell *matCellDef="let presence">
+            {{ presence.mentor.firstname }} {{ presence.mentor.name }}
+          </td>
         </ng-container>
 
         <!-- Colonne Date -->
@@ -46,8 +48,16 @@ import { AccountantNavbarComponent } from "./accountant-navbar.component"; // Im
               mat-raised-button
               color="primary"
               (click)="validatePayment(presence)"
+              [disabled]="presence.status === 'validated'"
             >
-              Valider
+              Valider le Paiement
+            </button>
+            <button
+              mat-raised-button
+              color="accent"
+              (click)="generateInvoice(presence)"
+            >
+              Générer la Facture
             </button>
           </td>
         </ng-container>
@@ -89,6 +99,25 @@ export class AccountantPaymentsComponent implements OnInit {
     this.apiService.validatePresencePayment(presence.id).subscribe(() => {
       presence.status = "validated";
       alert("Paiement validé avec succès !");
+    });
+  }
+
+  generateInvoice(presence: any) {
+    this.apiService.generateInvoice(presence.id).subscribe({
+      next: (response) => {
+        // Afficher un message de succès
+        alert("Facture générée avec succès !");
+        console.log("Facture générée :", response);
+
+        // Si nécessaire, téléchargez la facture (si elle est retournée sous forme de fichier)
+        if (response.invoiceUrl) {
+          window.open(response.invoiceUrl, "_blank");
+        }
+      },
+      error: (err) => {
+        console.error("Erreur lors de la génération de la facture :", err);
+        alert("Une erreur est survenue lors de la génération de la facture.");
+      },
     });
   }
 }
