@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { RouterModule } from '@angular/router';
+import { RouterModule } from "@angular/router";
 import {
   FormBuilder,
   FormGroup,
@@ -72,6 +72,9 @@ import { AuthService } from "../../services/auth.service";
             <div class="form-group">
               <label for="role">Rôle</label>
               <select id="role" formControlName="role">
+                <option value="" disabled selected>
+                  -- Sélectionnez un rôle --
+                </option>
                 <option value="mentor">Mentor</option>
                 <option value="consultant">Consultant</option>
                 <option value="comptable">Agent Comptable</option>
@@ -229,12 +232,13 @@ export class RegisterComponent {
       name: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required, Validators.minLength(8)]],
-      role: ["mentor", Validators.required],
+      role: ["", Validators.required], // Pas de rôle par défaut
     });
   }
 
   onSubmit() {
     if (this.registerForm.valid) {
+      console.log("Données envoyées :", this.registerForm.value); // Log des données
       this.authService.register(this.registerForm.value).subscribe({
         next: (response) => {
           this.authService.setToken(response.token);

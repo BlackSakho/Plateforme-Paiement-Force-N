@@ -186,7 +186,7 @@ export class MentorNavbarComponent {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     localStorage.removeItem("user");
-    this.router.navigate(["/login"]);
+    this.router.navigate(["/home"]);
   }
 
   toggleMenu() {

@@ -178,7 +178,7 @@ export class AppComponent {
   logout() {
     this.authService.logout().subscribe({
       next: () => {
-        this.router.navigate(["/login"]); // Rediriger vers la page de connexion
+        this.router.navigate(["/home"]); // Rediriger vers la page de connexion
       },
       error: (error) => {
         console.error("Erreur lors de la déconnexion :", error);
