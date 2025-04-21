@@ -30,13 +30,14 @@ import { Router } from "@angular/router"; // Import du Router
       </button>
       <span>Plateforme de Gestion</span>
       <span class="spacer"></span>
-      <button mat-icon-button>
-        <mat-icon>notifications</mat-icon>
-      </button>
+
+      <!-- Avatar -->
+      <img *ngIf="avatarUrl" [src]="avatarUrl" alt="Avatar" class="avatar" />
+
       <span *ngIf="currentUser">
         {{ currentUser.firstname }} {{ currentUser.name }}
       </span>
-      
+
       <button mat-icon-button>
         <mat-icon>account_circle</mat-icon>
       </button>
@@ -60,11 +61,15 @@ import { Router } from "@angular/router"; // Import du Router
             <mat-icon>dashboard</mat-icon>
             <span>Tableau de bord</span>
           </a>
-          <a mat-list-item routerLink="/users" routerLinkActive="active">
+          <!-- <a mat-list-item routerLink="/users" routerLinkActive="active">
             <mat-icon>people</mat-icon>
             <span>Utilisateurs</span>
-          </a>
-          <a mat-list-item routerLink="/consultant-missions" routerLinkActive="active">
+          </a> -->
+          <a
+            mat-list-item
+            routerLink="/consultant-missions"
+            routerLinkActive="active"
+          >
             <mat-icon>work</mat-icon>
             <span>Missions</span>
           </a>
@@ -160,6 +165,15 @@ import { Router } from "@angular/router"; // Import du Router
       .logout-button {
         color: white;
       }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+        border: 2px solid white;
+      }
     `,
   ],
 })
@@ -168,11 +182,28 @@ export class AppComponent {
 
   title = "Plateforme de Gestion";
   currentUser: any; // Propriété pour stocker l'utilisateur connecté
+  avatarUrl: string = ""; // URL de l'avatar
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.currentUser = this.authService.getCurrentUser(); // Récupérer l'utilisateur connecté
+
+    // Si l'utilisateur a une URL d'avatar, utilisez-la
+    if (this.currentUser?.avatarUrl) {
+      this.avatarUrl = this.currentUser.avatarUrl;
+    } else {
+      // Sinon, générez des initiales à partir du prénom et du nom
+      const firstname = this.currentUser?.firstname || "";
+      const name = this.currentUser?.name || "";
+      this.avatarUrl = this.generateInitials(firstname, name);
+    }
+  }
+
+  // Méthode pour générer des initiales
+  generateInitials(firstname: string, name: string): string {
+    const initials = `${firstname.charAt(0)}${name.charAt(0)}`.toUpperCase();
+    return `https://ui-avatars.com/api/?name=${initials}&background=random&color=fff`;
   }
 
   logout() {
@@ -195,6 +226,6 @@ export class AppComponent {
     const currentRoute = this.router.url;
 
     // Afficher le navbar par défaut uniquement pour les administrateurs
-    return role === "admin" && !currentRoute.startsWith("/mentor");
+    return role === "consultant" && !currentRoute.startsWith("/mentor");
   }
 }

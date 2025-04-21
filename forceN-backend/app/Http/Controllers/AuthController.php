@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+
 
 class AuthController extends Controller
 {
@@ -76,6 +78,9 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
+
+        // Log pour vérifier la valeur du rôle
+        Log::info('Rôle reçu : ' . $request->role);
 
         // Création de l'utilisateur
         $user = User::create([

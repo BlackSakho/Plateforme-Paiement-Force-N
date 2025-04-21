@@ -215,7 +215,7 @@ export class LoginComponent {
             this.router.navigate(["/accountant-dashboard"]); // Rediriger vers le dashboard comptable
           } else if (role === "mentor") {
             this.router.navigate(["/mentor-dashboard"]); // Rediriger vers le dashboard mentor
-          } else if (role === "admin") {
+          } else if (role === "consultant") {
             this.router.navigate(["/dashboard"]); // Rediriger vers le dashboard admin
           } else {
             this.router.navigate(["/"]); // Rediriger vers la page d'accueil par défaut

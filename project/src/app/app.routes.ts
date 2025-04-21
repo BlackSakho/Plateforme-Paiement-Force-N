@@ -18,7 +18,7 @@ export const routes: Routes = [
     path: "dashboard",
     component: DashboardComponent,
     canActivate: [AuthGuard],
-    data: { roles: ["admin"] },
+    data: { roles: ["consultant"] },
   },
   {
     path: "mentor-dashboard",
@@ -79,7 +79,7 @@ export const routes: Routes = [
         (m) => m.ConsultantMissionsComponent
       ),
     canActivate: [AuthGuard, RoleGuard],
-    data: { roles: ["admin"] },
+    data: { roles: ["consultant"] },
   },
 
   // Routes pour le comptable

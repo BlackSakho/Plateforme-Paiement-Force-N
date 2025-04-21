@@ -72,7 +72,7 @@ export class AuthService {
       this.router.navigate(["/accountant-dashboard"]);
     } else if (role === "mentor") {
       this.router.navigate(["/mentor-dashboard"]);
-    } else if (role === "consulant") {
+    } else if (role === "consultant") {
       this.router.navigate(["/dashboard"]);
     } else {
       this.router.navigate(["/"]); // Rediriger vers la page d'accueil par défaut

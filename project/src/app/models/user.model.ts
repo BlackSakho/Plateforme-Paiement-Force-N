@@ -3,7 +3,7 @@ export interface User {
   firstname: string;
   name: string;
   email: string;
-  role: 'consultant' | 'mentor' | 'admin';
+  role: 'consultant' | 'mentor' | 'admin'|'comptable';
   email_verified_at?: Date;
   created_at?: Date;
   updated_at?: Date;
@@ -14,7 +14,7 @@ export interface RegisterRequest {
   name: string;
   email: string;
   password: string;
-  role?: 'consultant' | 'mentor' | 'admin';
+  role?: 'consultant' | 'mentor' | 'admin'|'comptable';
 }
 export interface Mission {
   id: number;
