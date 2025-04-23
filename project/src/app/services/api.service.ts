@@ -207,7 +207,43 @@ export class ApiService {
       { headers }
     );
   }
+
+  getValidatedPresences(): Observable<any> {
+    const token = localStorage.getItem("token"); // Récupérer le token depuis le stockage local
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Ajouter le token dans l'en-tête
+    });
+    
+
+    return this.http.get<any[]>(
+      `${this.apiUrl}/presences/validated`,
+      { headers }
+    );
+  }
+
   getNotifications(): Observable<any> {
     return this.http.get(`${this.apiUrl}/notifications`);
   }
+  sendInvoiceToMentor(id: number): Observable<any> {
+    const token = localStorage.getItem("token");
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+    return this.http.post(`${this.apiUrl}/invoices/${id}/send`, {}, { headers });
+  }
+  
+
+  getInvoiceById(id: number): Observable<any> {
+    const token = localStorage.getItem("token");
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  
+    return this.http.get(`${this.apiUrl}/invoices/${id}`, { headers });
+  }
+
+ 
+  
+  
+  
 }

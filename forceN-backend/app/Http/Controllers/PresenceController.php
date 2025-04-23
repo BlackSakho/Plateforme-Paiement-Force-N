@@ -8,6 +8,7 @@ use App\Events\PresenceValidatedByConsultant;
 use App\Events\PresenceValidatedByAccountant;
 use App\Events\PresenceSubmitted;
 use App\Notifications\PresenceValidatedForPayment;
+use Illuminate\Support\Facades\Auth;
 
 class PresenceController extends Controller
 {
@@ -90,8 +91,11 @@ class PresenceController extends Controller
         // Récupérer la fiche de présence par son ID
         $presence = Presence::findOrFail($id);
 
-        // Mettre à jour la validation par le service finance
+        // Récupérer l'utilisateur connecté (le comptable)
+        $accountantId = Auth::id(); // ou $request->user()->id
+        // Mettre à jour les champs de validation finance
         $presence->validated_by_finance = true;
+        $presence->validated_by_finance_id = $accountantId; // 🟢 On enregistre le comptable ici
 
         // Vérifiez si tous les rôles ont validé
         if ($presence->validated_by_consultant && $presence->validated_by_finance) {
@@ -131,4 +135,14 @@ class PresenceController extends Controller
 
         return response()->json($presences, 200);
     }
+
+    public function getValidatedPresencesForAccountant()
+{
+    $presences = Presence::where('status', 'validated')
+        ->with(['mentor:id,firstname,name'])
+        ->get();
+
+    return response()->json($presences, 200);
+}
+
 }

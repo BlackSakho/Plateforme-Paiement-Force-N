@@ -1,0 +1,17 @@
+.search-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+    justify-content: center;
+  }
+  
+  .search-bar input,
+  .search-bar select {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-width: 180px;
+  }
+  

@@ -143,7 +143,7 @@ export class DashboardComponent implements OnInit {
   recentActivities = [
     {
       icon: "person_add",
-      description: "Nouveau consultant ajouté",
+      description: "Nouveau  mentor inscrit",
       date: new Date(),
     },
     {

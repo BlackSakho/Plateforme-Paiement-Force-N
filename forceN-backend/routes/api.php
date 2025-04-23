@@ -50,4 +50,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/consultant-validated-presences', [PresenceController::class, 'getConsultantValidatedPresences']);
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::post('/invoices/generate', [InvoiceController::class, 'generateInvoice']);
+    Route::post('/invoices/{id}/send', [InvoiceController::class, 'sendToMentor']);
+    Route::get('/invoices/{id}', [InvoiceController::class, 'show']);
+    Route::middleware('auth:sanctum')->get('/presences/validated', [PresenceController::class, 'getValidatedPresencesForAccountant']);
+
+
+
 });

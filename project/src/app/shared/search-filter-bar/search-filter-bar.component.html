@@ -1,0 +1,17 @@
+<div class="search-bar">
+    <input type="text" placeholder="🔍 Rechercher par nom" (input)="onQueryChange($event.target.value)" />
+  
+    <input type="date" (change)="onDateChange($event.target.value)" />
+  
+    <select (change)="onMonthChange($event.target.value)">
+      <option value="">Tous les mois</option>
+      <option *ngFor="let m of months" [value]="m.value">{{ m.label }}</option>
+    </select>
+  
+    <select *ngIf="showStatusFilter" (change)="onStatusChange($event.target.value)">
+      <option value="">Tous les statuts</option>
+      <option value="validated">Validées</option>
+      <option value="unvalidated">Non validées</option>
+    </select>
+  </div>
+  

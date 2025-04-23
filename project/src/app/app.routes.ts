@@ -110,6 +110,16 @@ export const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: ["comptable"] },
   },
+  {
+    path: "invoice/:id",
+    loadComponent: () =>
+      import("./components/accountant/invoice-view.component").then(
+        (m) => m.InvoiceViewComponent
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ["comptable"] }, // ou adapte selon les rôles autorisés
+  },
+  
 
   { path: "**", redirectTo: "" }, // Rediriger toutes les routes non définies vers la page d'accueil
 ];
