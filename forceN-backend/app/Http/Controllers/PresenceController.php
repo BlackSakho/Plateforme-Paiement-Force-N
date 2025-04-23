@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Events\PresenceValidatedByConsultant;
 use App\Events\PresenceValidatedByAccountant;
 use App\Events\PresenceSubmitted;
+use App\Notifications\PresenceValidatedForPayment;
 
 class PresenceController extends Controller
 {
@@ -97,10 +98,16 @@ class PresenceController extends Controller
             $presence->status = 'validated'; // Mettre à jour le statut global
         }
 
+        // Envoi de mail au mentor
+        if ($presence->mentor && $presence->mentor->email) {
+            $presence->mentor->notify(new PresenceValidatedForPayment($presence));
+        }
         // Sauvegarder les modifications dans la base de données
         $presence->save();
         // Déclencher l'événement
         event(new PresenceValidatedByAccountant($presence));
+
+
 
         // Retourner une réponse JSON
         return response()->json([

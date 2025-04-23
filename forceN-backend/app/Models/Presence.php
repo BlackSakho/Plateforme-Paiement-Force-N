@@ -22,6 +22,7 @@ class Presence extends Model
         'validated_by_consultant',
         'validated_by_certificate_manager',
         'validated_by_finance',
+        'validated_by_finance_id'
     ];
 
     // Relation avec le mentor

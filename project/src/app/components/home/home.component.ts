@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   template: `
     <div class="hero-section">
       <div class="hero-content">
-        <h1>Bienvenue sur <span>Force N</span></h1>
+        <h1>Bienvenue sur <span>FORCE-N</span></h1>
         <p>
           La plateforme numérique dédiée au renforcement de l'employabilité à travers des formations innovantes.
         </p>
