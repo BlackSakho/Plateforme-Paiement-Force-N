@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Mission;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Notifications\MissionAssigned;
 
 class MissionController extends Controller
 {
@@ -31,6 +33,13 @@ class MissionController extends Controller
 
         // Créer la mission
         $mission = Mission::create($validatedData);
+        
+        // 🔔 Envoyer l'email au mentor
+        $mentor = User::find($mission->mentor_id);
+        if ($mentor && $mentor->email) {
+            $mentor->notify(new MissionAssigned($mission));
+        }
+
 
         return response()->json(['message' => 'Mission créée avec succès', 'mission' => $mission], 201);
     }
