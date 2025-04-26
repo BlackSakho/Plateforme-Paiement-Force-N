@@ -19,9 +19,8 @@ import { Router } from "@angular/router";
       <div class="login-wrapper">
         <div class="login-illustration">
           <img
-            src="https://cdn-icons-png.flaticon.com/512/4341/4341139.png"
-            alt="Login Illustration"
-          />
+          src="assets/login.jpg" alt="Formation illustration" />
+            
         </div>
 
         <div class="login-card">
@@ -217,7 +216,7 @@ export class LoginComponent {
             this.router.navigate(["/mentor-dashboard"]); // Rediriger vers le dashboard mentor
           } else if (role === "consultant") {
             this.router.navigate(["/dashboard"]); // Rediriger vers le dashboard admin
-          } else {
+          } else  {
             this.router.navigate(["/"]); // Rediriger vers la page d'accueil par défaut
           }
         },

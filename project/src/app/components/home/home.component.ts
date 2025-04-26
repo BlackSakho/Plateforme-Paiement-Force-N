@@ -24,7 +24,9 @@ import { CommonModule } from '@angular/common';
         </div>
       </div>
       <div class="hero-image">
-        <img src="https://img.freepik.com/vecteurs-premium/illustrations-vectorielles-dessin-anime-isolees-du-gestionnaire-informatique_107173-21656.jpg?w=2000" alt="Formation illustration" />
+       <img src="https://img.freepik.com/vecteurs-premium/illustrations-vectorielles-dessin-anime-isolees-du-gestionnaire-informatique_107173-21656.jpg?w=2000" alt="Formation illustration" />
+         
+
       </div>
     </div>
   `,

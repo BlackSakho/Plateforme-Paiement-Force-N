@@ -28,10 +28,10 @@ import { MentorNavbarComponent } from "./mentor-navbar/mentor-navbar.component";
         >
           <mat-card-title class="text-2xl font-bold">
             <mat-icon class="mr-2 align-middle">how_to_reg</mat-icon>
-            Vos Fiches de Présence
+            Vos Rapport de Présence
           </mat-card-title>
           <mat-card-subtitle class="text-blue-100 mt-2">
-            Consultez les fiches de présence que vous avez soumises
+            Consultez les Rapports que vous avez soumises
           </mat-card-subtitle>
         </mat-card-header>
 

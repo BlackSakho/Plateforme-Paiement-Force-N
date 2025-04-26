@@ -19,7 +19,7 @@ import { AuthService } from "../../services/auth.service";
       <div class="login-wrapper">
         <div class="login-illustration">
           <img
-            src="https://cdn-icons-png.flaticon.com/512/4341/4341139.png"
+            src="assets/sign.jpg"
             alt="Register Illustration"
           />
         </div>

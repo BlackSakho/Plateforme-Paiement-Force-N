@@ -213,37 +213,78 @@ export class ApiService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Ajouter le token dans l'en-tête
     });
-    
 
-    return this.http.get<any[]>(
-      `${this.apiUrl}/presences/validated`,
-      { headers }
-    );
+    return this.http.get<any[]>(`${this.apiUrl}/presences/validated`, {
+      headers,
+    });
   }
 
   getNotifications(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/notifications`);
+    const token = localStorage.getItem("token");
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get(`${this.apiUrl}/notifications`, { headers });
   }
   sendInvoiceToMentor(id: number): Observable<any> {
     const token = localStorage.getItem("token");
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
-    return this.http.post(`${this.apiUrl}/invoices/${id}/send`, {}, { headers });
+    return this.http.post(
+      `${this.apiUrl}/invoices/${id}/send`,
+      {},
+      { headers }
+    );
   }
-  
 
   getInvoiceById(id: number): Observable<any> {
     const token = localStorage.getItem("token");
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
-  
+
     return this.http.get(`${this.apiUrl}/invoices/${id}`, { headers });
   }
 
- 
-  
-  
+  getMessagesWithUser(recipientId: number): Observable<any[]> {
+    const token = localStorage.getItem("token");
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<any[]>(`${this.apiUrl}/messages/${recipientId}`, {
+      headers,
+    });
+  }
+
+  // 📤 Envoyer un message à un destinataire
+  sendMessage(receiverId: number, message: string): Observable<any> {
+    const token = localStorage.getItem("token");
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post(`${this.apiUrl}/messages`, {
+      receiver_id: receiverId,
+      message: message,
+      headers,
+    });
+  }
+  // Récupérer les factures d'un mentor
+  getMentorInvoices(mentorId: number): Observable<any[]> {
+    const token = localStorage.getItem("token");
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.get<any[]>(
+      `${this.apiUrl}/invoices/by-mentor/${mentorId}`,
+      { headers }
+    );
+  }
+
+  // Générer un lien de téléchargement pour une facture
+  getInvoiceDownloadLink(invoiceId: number): string {
+    return `${this.apiUrl}/invoices/${invoiceId}/download`;
+  }
   
 }

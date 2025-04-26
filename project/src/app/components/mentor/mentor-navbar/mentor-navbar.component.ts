@@ -20,7 +20,7 @@ import { RouterModule } from "@angular/router";
   ],
   template: `
     <mat-toolbar class="glass-navbar">
-      <div class="brand">🌟 Mentor dashboard</div>
+      <div class="brand">FORCE-N🌟 Mentor dashboard</div>
 
       <button mat-icon-button class="mobile-toggle" (click)="toggleMenu()">
         <mat-icon>{{ isMenuOpen ? 'close' : 'menu' }}</mat-icon>

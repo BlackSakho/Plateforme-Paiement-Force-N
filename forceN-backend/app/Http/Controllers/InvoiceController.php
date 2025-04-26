@@ -53,4 +53,12 @@ class InvoiceController extends Controller
 
         return response()->json($invoice);
     }
+    public function getInvoicesByMentor($mentorId)
+    {
+        $invoices = Invoice::whereHas('presence', function ($query) use ($mentorId) {
+            $query->where('mentor_id', $mentorId);
+        })->get();
+
+        return response()->json($invoices);
+    }
 }

@@ -28,6 +28,7 @@ import { NotificationService } from "./services/notification.service"; // Import
   ],
 
   template: `
+ 
     <mat-toolbar *ngIf="shouldShowAdminNavbar()" color="primary">
       <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>

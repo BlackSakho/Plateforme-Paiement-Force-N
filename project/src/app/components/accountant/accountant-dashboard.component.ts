@@ -2,11 +2,12 @@ import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { AccountantNavbarComponent } from "./accountant-navbar.component";
+import { ChatBoxComponent } from '../../components/chat-box/chat-box.component'; // ajuste le chemin si besoin
 
 @Component({
   selector: "app-accountant-dashboard",
   standalone: true,
-  imports: [CommonModule, RouterModule, AccountantNavbarComponent],
+  imports: [CommonModule, RouterModule,ChatBoxComponent,  AccountantNavbarComponent],
   template: `
     <app-accountant-navbar></app-accountant-navbar>
     <div class="dashboard-container">
@@ -37,6 +38,7 @@ import { AccountantNavbarComponent } from "./accountant-navbar.component";
         >
           <span>📋</span> Fiches Validées
         </button>
+        <app-chat-box [role]="'comptable'"></app-chat-box>
       </div>
     </div>
   `,

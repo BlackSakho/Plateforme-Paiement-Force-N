@@ -1,0 +1,6 @@
+src="https://cdn-icons-png.flaticon.com/512/4341/4341139.png"
+            alt="Login Illustration"
+          />
+
+ src="https://cdn-icons-png.flaticon.com/512/4341/4341139.png"
+            alt="Register Illustration"

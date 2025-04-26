@@ -59,7 +59,7 @@ import { MentorNavbarComponent } from "./mentor-navbar/mentor-navbar.component";
         >
           <mat-card-content>
             <mat-icon class="stat-icon">schedule</mat-icon>
-            <h3 class="stat-title">Feuilles de présence</h3>
+            <h3 class="stat-title">Mes rapports</h3>
             <p class="stat-description">Suivez vos feuilles de présence</p>
           </mat-card-content>
         </mat-card>
@@ -67,7 +67,7 @@ import { MentorNavbarComponent } from "./mentor-navbar/mentor-navbar.component";
         <!-- Factures -->
         <mat-card
           class="stat-card invoices-card"
-          (click)="navigateTo('invoices')"
+          (click)="navigateTo('mentor-invoices')"
         >
           <mat-card-content>
             <mat-icon class="stat-icon">receipt</mat-icon>

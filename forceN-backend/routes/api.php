@@ -7,6 +7,7 @@ use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +54,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/invoices/{id}/send', [InvoiceController::class, 'sendToMentor']);
     Route::get('/invoices/{id}', [InvoiceController::class, 'show']);
     Route::middleware('auth:sanctum')->get('/presences/validated', [PresenceController::class, 'getValidatedPresencesForAccountant']);
+    Route::get('/messages/{user}', [MessageController::class, 'index']);
+    Route::post('/messages', [MessageController::class, 'store']);
+    Route::get('/invoices/by-mentor/{mentorId}', [InvoiceController::class, 'getInvoicesByMentor']);
 
 
 

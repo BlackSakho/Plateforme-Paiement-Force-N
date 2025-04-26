@@ -5,9 +5,10 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from "@angular/material/menu";
 import { NotificationService } from "../../services/notification.service"; // Import du service
 
+
 @Component({
   selector: "app-accountant-navbar",
-  imports: [CommonModule, RouterModule, MatIconModule, MatMenuModule],
+  imports: [CommonModule, RouterModule, MatIconModule,   MatMenuModule],
   template: `
     <nav class="navbar">
       <div class="navbar-container">
@@ -47,11 +48,14 @@ import { NotificationService } from "../../services/notification.service"; // Im
               <span class="link-icon">📋</span> Fiches Validées
             </a>
           </li>
+          
           <li>
             <a (click)="logout()">
               <span class="link-icon">🚪</span> Déconnexion
             </a>
           </li>
+          
+
         </ul>
       </div>
     </nav>

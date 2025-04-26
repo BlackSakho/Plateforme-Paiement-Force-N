@@ -65,6 +65,11 @@ export class AuthService {
     const user = localStorage.getItem("user"); // Supposons que les infos utilisateur sont stockées dans localStorage
     return user ? JSON.parse(user) : null;
   }
+  getUserId(): number | null {
+    const user = this.getCurrentUser();
+    return user?.id || null;
+  }
+  
 
   redirectToDashboard(): void {
     const role = localStorage.getItem("role");

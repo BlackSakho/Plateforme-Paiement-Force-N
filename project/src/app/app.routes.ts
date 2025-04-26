@@ -7,6 +7,10 @@ import { AuthGuard } from "./guards/auth.guard";
 import { RoleGuard } from "./guards/role.guard";
 import { MentorDashboardComponent } from "./components/mentor/mentor-dashboard.component";
 import { AttendanceFormComponent } from "./components/mentor/attendance-form.component";
+import { FactureDetailMentorComponent } from "./components/mentor/facture-detail-mentor.component";
+import { AdminLayoutComponent } from "./components/admin/admin-layout/admin-layout.component";
+import { AdminDashboardComponent } from "./components/admin/dashboard/admin-dashboard.component";
+
 
 export const routes: Routes = [
   { path: "", component: HomeComponent }, // Route par défaut pour la page d'accueil
@@ -119,6 +123,27 @@ export const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: ["comptable"] }, // ou adapte selon les rôles autorisés
   },
+  {
+    path: "mentor-invoices",
+    loadComponent: () =>
+      import("./components/mentor/facture-mentor.component").then(
+        (m) => m.FacturesMentorComponent
+      ),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ["mentor"] },
+  },
+  {
+    path: 'facture/:id',
+    component: FactureDetailMentorComponent
+  },
+  {
+    path: "admin/dashboard",
+    loadComponent: () =>
+      import("./components/admin/dashboard/admin-dashboard.component").then(m => m.AdminDashboardComponent),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ["admin"] }
+  },
+
   
 
   { path: "**", redirectTo: "" }, // Rediriger toutes les routes non définies vers la page d'accueil
